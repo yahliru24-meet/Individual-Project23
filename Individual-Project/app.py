@@ -50,7 +50,7 @@ def signup():
             UID = login_session['user']['localId']
             login_session['user'] = auth.create_user_with_email_and_password(email, password)
             user = {"name": full_name, "username" : username, "bio": bio}
-            print(db.child("Users").child(UID).set(user))
+            db.child("Users").child(UID).set(user)
             return redirect(url_for('home'))
         except:
             error = "Authentication failed"
@@ -61,11 +61,12 @@ def signup():
 def home():
     UID = login_session['user']['localId']
     cities = db.child("Cities").get().val().keys()
+    username = db.child("Users").child(UID).child("username").get().val()
     try:
         fav_cities = db.child("Users").child(UID).child("favs").get().val().keys()
-        return render_template("home.html", cities = cities, favs = fav_cities)
+        return render_template("home.html", cities = cities, favs = fav_cities, username = username)
     except:
-        return render_template("home.html", cities = cities)
+        return render_template("home.html", cities = cities, username = username)
 
 
 @app.route("/c/<string:name>", methods = ["GET", "POST"])
