@@ -36,13 +36,14 @@
                         </div>
 
                         <p class="lead">Summary: {{cities[city_name]["summary"]}} </p>
+                        <p class="lead">Current Weather: {{ temp }} °C</p>
                         <p class="lead">Area: {{cities[city_name]["area"]}}</p>
                         <p class="lead">Population: {{cities[city_name]["population"]}}</p>
                         
                         <div class="d-flex">
                             <form method="POST"><button class="btn btn-outline-dark flex-shrink-0" type="submit">
                                 <i class="bi-cart-fill me-1"></i>
-                                Add to favorites
+                                {{status}}
                             </button></form>
                         </div>
                     </div>

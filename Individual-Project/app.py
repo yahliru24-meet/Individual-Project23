@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import session as login_session
 import pyrebase
 import random
+import requests
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SECRET_KEY'] = 'super-secret-key'
@@ -75,13 +77,31 @@ def home():
 
 @app.route("/c/<string:name>", methods = ["GET", "POST"])
 def city(name):
+    url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid=99a833c49853036448f3ac311c3714f8"
+    r = requests.get(url.format(name)).json()
+    raw_temp = r['main']['temp']
+    temp = int(raw_temp / 10)
     UID = login_session['user']['localId']
     username = db.child("Users").child(UID).child("username").get().val()
     cities = db.child("Cities").get().val()
+    try:
+        fav_status = name in list(db.child("Users").child(UID).child("favs").get().val().keys())
+        if fav_status is True:
+            status = "Remove from favorites"
+        else:
+            status = "Add to favorites"
+    except:
+        status = "Add to favorites"
+        fav_status = False
     if request.method == "POST":
-        UID = login_session['user']['localId']
-        db.child("Users").child(UID).child("favs").child(name).set("/")
-    return render_template("city.html", city_name = name, cities = cities, username = username)
+        if fav_status is True:
+            db.child("Users").child(UID).child("favs").child(name).remove()
+            return render_template("city.html", city_name = name, cities = cities, username = username, temp = temp, status = status)
+        else:
+            db.child("Users").child(UID).child("favs").child(name).set("/")
+            return render_template("city.html", city_name = name, cities = cities, username = username, temp = temp, status = status)
+    else:
+        return render_template("city.html", city_name = name, cities = cities, username = username, temp = temp, status = status)
 
 
 @app.route("/user", methods = ["GET", "POST"])
