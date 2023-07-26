@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>@{{ username }}</title>
+        <title>CitySearch / @{{ username }}</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
     <body>
@@ -31,10 +31,10 @@
                     <div class="col-md-6">
                         <h1 class="display-5 fw-bolder">Hello @{{ username }}</h1>
                         <div class="fs-5 mb-5">
-                            <span>Thank you for using CitySearch {{ full_name }}</span>
+                            <span>Thank you for using CitySearch {{ full_name }} :)</span>
                         </div>
                         {% if favs is defined %}
-                        <span>Here are your favorite cities</span>
+                        <span>Here are your favorite cities:</span>
                         <div>
                             <ul id="myUL">
 

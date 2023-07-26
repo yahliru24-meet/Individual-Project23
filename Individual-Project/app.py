@@ -84,23 +84,28 @@ def city(name):
     UID = login_session['user']['localId']
     username = db.child("Users").child(UID).child("username").get().val()
     cities = db.child("Cities").get().val()
-    try:
-        fav_status = name in list(db.child("Users").child(UID).child("favs").get().val().keys())
+    
+    if request.method == "POST":
+        try:
+            fav_status = name in list(db.child("Users").child(UID).child("favs").get().val().keys())
+        except:
+            fav_status = False        
+        if fav_status is True:
+            status = "Remove from favorites"
+            db.child("Users").child(UID).child("favs").child(name).remove()
+        else:
+            status = "Add to favorites"
+            db.child("Users").child(UID).child("favs").child(name).set("/")
+        return redirect(url_for("city", name=name))         
+    else:
+        try:
+            fav_status = name in list(db.child("Users").child(UID).child("favs").get().val().keys())
+        except:
+            fav_status = False        
         if fav_status is True:
             status = "Remove from favorites"
         else:
             status = "Add to favorites"
-    except:
-        status = "Add to favorites"
-        fav_status = False
-    if request.method == "POST":
-        if fav_status is True:
-            db.child("Users").child(UID).child("favs").child(name).remove()
-            return render_template("city.html", city_name = name, cities = cities, username = username, temp = temp, status = status)
-        else:
-            db.child("Users").child(UID).child("favs").child(name).set("/")
-            return render_template("city.html", city_name = name, cities = cities, username = username, temp = temp, status = status)
-    else:
         return render_template("city.html", city_name = name, cities = cities, username = username, temp = temp, status = status)
 
 
