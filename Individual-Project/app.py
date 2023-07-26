@@ -102,6 +102,12 @@ def random_city():
     cities = list(db.child("Cities").get().val().keys())
     return redirect(url_for("city", name=random.choice(cities)))
 
+@app.route('/signout')
+def signout():
+    login_session['user'] = None
+    auth.current_user = None
+    return redirect(url_for('signin'))
+
 
 # def init_app():
 #     israel_cities = {
