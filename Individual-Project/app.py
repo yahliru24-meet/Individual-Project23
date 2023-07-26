@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import session as login_session
 import pyrebase
+import random
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SECRET_KEY'] = 'super-secret-key'
@@ -45,11 +46,10 @@ def signup():
         password = request.form['password']
         username = request.form["username"]
         full_name = request.form["full_name"]
-        bio = request.form["bio"]
         try:
-            UID = login_session['user']['localId']
             login_session['user'] = auth.create_user_with_email_and_password(email, password)
-            user = {"name": full_name, "username" : username, "bio": bio}
+            UID = login_session['user']['localId']
+            user = {"name": full_name, "username" : username}
             db.child("Users").child(UID).set(user)
             return redirect(url_for('home'))
         except:
@@ -62,6 +62,7 @@ def home():
     UID = login_session['user']['localId']
     cities = db.child("Cities").get().val().keys()
     username = db.child("Users").child(UID).child("username").get().val()
+    print(username)
     try:
         fav_cities = db.child("Users").child(UID).child("favs").get().val().keys()
         return render_template("home.html", cities = cities, favs = fav_cities, username = username)
@@ -71,20 +72,29 @@ def home():
 
 @app.route("/c/<string:name>", methods = ["GET", "POST"])
 def city(name):
+    cities = db.child("Cities").get().val()
     if request.method == "POST":
         UID = login_session['user']['localId']
         db.child("Users").child(UID).child("favs").child(name).set("/")
-    return render_template("city.html", city_name = name)
+    return render_template("city.html", city_name = name, cities = cities)
 
 
-@app.route("/u/<string:name>", methods = ["GET", "POST"])
-def user(name):
+@app.route("/user", methods = ["GET", "POST"])
+def user():
     try:
         UID = login_session['user']['localId']
+        username = db.child("Users").child(UID).child("username").get().val()
+        full_name = db.child("Users").child(UID).child("name").get().val()
         fav_cities = db.child("Users").child(UID).child("favs").get().val().keys()
-        return render_template("user.html", username = name, favs = fav_cities)
+        return render_template("user.html", favs = fav_cities, username = username, full_name = full_name)
     except:
-        return render_template("user.html", username = name)
+        return render_template("user.html", username = username, full_name = full_name)
+
+
+@app.route("/random_city")
+def random_city():
+    cities = list(db.child("Cities").get().val().keys())
+    return redirect(url_for("city", name=random.choice(cities)))
 
 
 # def init_app():

@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>CitySearch / {{ username }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
     <div id="banner">
         <a href="{{url_for('home')}}"> Home </a>
-        <a href="{{url_for('user', name='username')}}"> User </a>
+        <a href="{{url_for('user')}}"> User </a>
+        <a href="{{url_for('random_city')}}"> Feel Lucky? </a>
     </div>
 
-    <h2> {{ username }} </h1>
-<!--     <h1> {{ full_name }} </h2>
-    <h2> {{ bio }} </h2> -->
+    <div id="user_info">
+    <h2> User: {{ username }} </h2>
+    <h2> {{ full_name }} </h2>
+    </div>
 
 
     {% if favs is defined %}
+    <h2> {{username}}'s Favorite Cities </h2>
         <div>
 
             <ul>

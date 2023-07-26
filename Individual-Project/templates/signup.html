@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>CitySearch / Signup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <form action="/signup" method="POST">
@@ -26,13 +27,6 @@
             <label>Username</label>
             <div>
                 <input type="text"  name="username" id="username" required>
-            </div>
-        </div>
-
-        <div>
-            <label>Bio</label>
-            <div>
-                <input type="text"  name="bio" id="bio" maxlength="280">
             </div>
         </div>
 
