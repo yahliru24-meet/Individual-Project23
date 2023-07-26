@@ -24,23 +24,26 @@ db = firebase.database()
 
 #Code goes below here
 
-
 @app.route("/", methods = ["GET", "POST"])
 def signin():
+    error = ""
+    pic = random.choice(list(db.child("Cities").get().val().keys()))
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
+        pic = random.choice(list(db.child("Cities").get().val().keys()))
         try:
             login_session['user'] = auth.sign_in_with_email_and_password(email, password)
             return redirect(url_for('home'))
         except:
             error = "Authentication failed"
-    return render_template("signin.html")
+    return render_template("signin.html", error = error, pic = pic)
 
 
 @app.route("/signup", methods = ["GET", "POST"])
 def signup():
     error = ""
+    pic = random.choice(list(db.child("Cities").get().val().keys()))
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -54,7 +57,7 @@ def signup():
             return redirect(url_for('home'))
         except:
             error = "Authentication failed"
-    return render_template("signup.html", error = error)
+    return render_template("signup.html", error = error, pic = pic)
 
 
 @app.route("/home", methods = ["GET", "POST"])
@@ -62,36 +65,39 @@ def home():
     UID = login_session['user']['localId']
     cities = db.child("Cities").get().val().keys()
     username = db.child("Users").child(UID).child("username").get().val()
-    print(username)
+    pic = random.choice(list(db.child("Cities").get().val().keys()))
     try:
         fav_cities = db.child("Users").child(UID).child("favs").get().val().keys()
-        return render_template("home.html", cities = cities, favs = fav_cities, username = username)
+        return render_template("home.html", cities = cities, favs = fav_cities, username = username, pic = pic)
     except:
-        return render_template("home.html", cities = cities, username = username)
+        return render_template("home.html", cities = cities, username = username, pic = pic)
 
 
 @app.route("/c/<string:name>", methods = ["GET", "POST"])
 def city(name):
+    UID = login_session['user']['localId']
+    username = db.child("Users").child(UID).child("username").get().val()
     cities = db.child("Cities").get().val()
     if request.method == "POST":
         UID = login_session['user']['localId']
         db.child("Users").child(UID).child("favs").child(name).set("/")
-    return render_template("city.html", city_name = name, cities = cities)
+    return render_template("city.html", city_name = name, cities = cities, username = username)
 
 
 @app.route("/user", methods = ["GET", "POST"])
 def user():
+    pic = random.choice(list(db.child("Cities").get().val().keys()))
     try:
         UID = login_session['user']['localId']
         username = db.child("Users").child(UID).child("username").get().val()
         full_name = db.child("Users").child(UID).child("name").get().val()
         fav_cities = db.child("Users").child(UID).child("favs").get().val().keys()
-        return render_template("user.html", favs = fav_cities, username = username, full_name = full_name)
+        return render_template("user.html", favs = fav_cities, username = username, full_name = full_name, pic = pic)
     except:
-        return render_template("user.html", username = username, full_name = full_name)
+        return render_template("user.html", username = username, full_name = full_name, pic = pic)
 
 
-@app.route("/random_city")
+@app.route("/random_city", methods = ["GET", "POST"])
 def random_city():
     cities = list(db.child("Cities").get().val().keys())
     return redirect(url_for("city", name=random.choice(cities)))
@@ -102,9 +108,9 @@ def random_city():
 #     "Jerusalem": {
 #         "summary": "Jerusalem is the capital and largest city of Israel. It holds great religious significance for Jews, Christians, and Muslims.",
 #         "population": "Approximately 936,000",
-#         "area": "125.1 square kilometers"
+#         "area": "125.1 square kilometers",
 #     },
-#     "Tel-Aviv": {
+#     "Tel Aviv": {
 #         "summary": "Tel Aviv is a major city on Israel's Mediterranean coastline. It is known for its vibrant nightlife, beaches, and cultural scene.",
 #         "population": "Approximately 460,000",
 #         "area": "51.8 square kilometers"

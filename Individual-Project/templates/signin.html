@@ -1,44 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CitySearch / Signin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <form method="POST" action="/">
-        <!-- Heading -->
-        <h4>
-            Welcom to CitySearch! Log in to your account
-        </h4>
-
-        <!-- Subheading -->
-        <p >
-        Please fill up your information below to sign in.
-        </p>
-
-        <!-- Email -->
-        <div>
-            <label>Email Address</label>
-            <div>
-                <input type="email"  name="email" id="emailStr" required>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>CitySearch / Signin</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a>CitySearch</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="3"></a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#"></a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-
-        <!-- Password -->
-        <div>
-            <label>Password</label>
-            <div class="input-group">
-                <input type="password"  name="password" minlength="6">
+        </nav>
+        <!-- Product section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ url_for('static', filename='pics/' + pic +'.jpg')}}" /></div>
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-bolder">CitySearch / Signin</h1>
+                        <div class="fs-5 mb-5">
+                            <span>welcome to CitySearch! Signin or either <a href="{{ url_for('signup') }}">Signup</a> :)</span>
+                        </div>
+                        
+                        <form method="POST">
+                            <p class="lead"><lable> Email Adress </lable></p>
+                        <div>
+                            <p class="lead"><input type="email"  name="email" required></p>
+                        </div>
+                            <p class="lead"><lable> Password </lable></p>
+                        <div>
+                            <p class="lead"><input type="password"  name="password" minlength="6" required></p>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn btn-outline-dark flex-shrink-0" type="submit">Signup</button>
+                        </div>
+                        </form>
+                        <br>
+                        <p class="error">{{ error }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Button -->
-        <div>
-            <input type="submit"/>
-        </div>
-    </form>
-    <br>
-    <a href="/signup">Don't have an account? signup</a>
-</body>
+        </section>
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+        <!-- Core theme JS-->
+        <script></script>
+        <script src="js/scripts.js"></script>
+    </body>
 </html>

@@ -1,10 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Shop Item - Start Bootstrap Template</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="{{ url_for('home') }}">CitySearch</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('user') }}">@{{ username }}</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('random_city') }}">Feeling Lucky?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Product section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ url_for('static', 'pics/' + )}}" alt="..." /></div>
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-bolder">Welcome to CitySearch</h1>
+                        <div class="fs-5 mb-5">
+                            <span>Hello {{ full_name }} :)</span>
+                        </div>
+                        {% if favs is defined %}
+                        <p class="lead"><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for cities.." title="Type in a city"></p>
+                        <div>
+                            <ul id="myUL">
+
+                            {% for fav in favs %}
+
+                                <p class="lead"><li><a href="{{url_for('city', name=fav)}}"> {{ fav }} </a></li></p>
+
+                            {% endfor %}
+
+                            </ul>
+                        </div>
+                        {% else %}
+
+                            <p class="lead"> <p class="lead">Welcome to CitySearch. Here you can search cities and pick your favorite ones!</p>
+
+                        {% endif %}
+                        <div class="d-flex">
+                            <form action="/i" method="POST"><button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                                Add to favorites
+                            </button></form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+        <!-- Core theme JS-->
+        <script>
+        function myFunction() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+</script>
+        <script src="js/scripts.js"></script>
+    </body>
 </html>

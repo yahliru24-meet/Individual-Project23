@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CitySearch / {{ username }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>@{{ username }}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="{{ url_for('home') }}">CitySearch</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('user') }}">@{{ username }}</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('random_city') }}">Feeling Lucky?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Product section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" ssrc="{{ url_for('static', filename='pics/' + pic +'.jpg')}}" /></div>
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-bolder">Hello @{{ username }}</h1>
+                        <div class="fs-5 mb-5">
+                            <span>Thank you for using CitySearch {{ full_name }}</span>
+                        </div>
+                        {% if favs is defined %}
+                        <span>Here are your favorite cities</span>
+                        <div>
+                            <ul id="myUL">
 
-    <div id="banner">
-        <a href="{{url_for('home')}}"> Home </a>
-        <a href="{{url_for('user')}}"> User </a>
-        <a href="{{url_for('random_city')}}"> Feel Lucky? </a>
-    </div>
+                            {% for fav in favs %}
 
-    <div id="user_info">
-    <h2> User: {{ username }} </h2>
-    <h2> {{ full_name }} </h2>
-    </div>
+                                <p class="lead"><li><a href="{{url_for('city', name=fav)}}"> {{ fav }} </a></li></p>
 
+                            {% endfor %}
 
-    {% if favs is defined %}
-    <h2> {{username}}'s Favorite Cities </h2>
-        <div>
+                            </ul>
+                        </div>
+                        {% else %}
 
-            <ul>
+                            <p class="lead"> <p class="lead">It's so empty here... you should realy pick some favorites</p>
 
-            {% for fav in favs %}
+                        {% endif %}
+                        <div class="d-flex">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <li><a href="{{url_for('city', name=fav)}}"> {{ fav }} </a></li>
-
-            {% endfor %}
-
-            </ul>
-        </div>
-    {% endif %}
-
-</body>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+        <!-- Core theme JS-->
+        <script></script>
+        <script src="js/scripts.js"></script>
+    </body>
 </html>
